@@ -1,0 +1,713 @@
+<!doctype html>  
+<html lang="en">
+	
+	<head>
+		<meta charset="utf-8">
+		
+		<title>Git básico</title>
+
+		<meta name="description" content="Git básico">
+		<meta name="author" content="Miguel de la Cruz">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+		
+		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<script>
+			// If the query includes 'print-pdf' we'll use the PDF print sheet
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		
+		<div class="reveal">
+
+			<!-- Used to fade in a background when a specific slide state is reached -->
+			<div class="state-background"></div>
+			
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Git básico</h1>
+					<h3>Barcamp Spain 2012</h3>
+				</section>
+
+				<section>
+					<h2>Miguel</h2>
+					<h4>de la Cruz Fernández</h4>
+
+					<br />
+
+					<p>Desarrollador Web - Sysadmin</p>
+
+					<h4><a href="http://www.salenda.es">Salenda</a></h4>
+					<p><i><small>- <a href="http://twitter.com/mgdelacroix">@mgdelacroix</a></small></i></p>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Qué es Git</h2>
+					<p>Sistema de control de versiones</p>
+					<ul>
+						<li>Distribuido</li>
+						<li>Simple</li>
+						<li>Rápido</li>
+						<li>Eficiente</li>
+						<li>Preparado para desarrollos no-lineales</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Distribuído VS Centralizado</h2>
+					<ul>
+						<li>Mi repositorio es local</li>
+						<li>Trabajo sin conexión</li>
+						<li>Mis cambios son míos hasta que los pongo en común</li>
+						<li>Integridad, todo en Git tiene su <i>checksum</i></li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Caso de éxito</h2>
+					<br />
+					<p>El kernel de Linux</p>
+				</section>
+
+				<section>
+					<h2>Cómo funciona Git</h2>
+					<ul>
+						<li>Agrupa los cambios en <b>commits</b></li>
+						<li>Los ficheros tienen tres estados</li>
+						<ul>
+							<li>commited</li>
+							<li>modified</li>
+							<li>staged</li>
+						</ul>
+					</ul>
+				</section>
+
+				<section>
+					<h2>En cualquier momento</h2>
+
+					<br />
+
+					<pre><code contenteditable>
+# Ayuda genérica
+$ git help
+
+# Ayuda de un comando concreto
+$ git help COMANDO
+					</code></pre>
+
+					<br />
+
+					<p>Git dispone de ayuda sensible al contexto en muchos comandos</p>
+
+					<br />
+
+					<p>Página web oficial: <a href="http://git-scm.com">git-scm.com</a></p>
+				</section>
+
+				<section>
+					<h2>Tu identidad</h2>
+					<pre><code contenteditable>
+# Configuramos el nombre de usuario para todos nuestros commits
+git config --global user.name "Foo Bar"
+
+# Configuramos nuestro email para todos nuestros commits
+git config --global user.email "foo@bar.com"
+					</code></pre>
+
+					<pre><code contenteditable>
+# Si quitamos la opción --global, los parámetros solo se aplican
+# al repositorio en el que estemos
+git config user.name "Específico de este repo"
+git config user.email "especifico@example.com"
+					</code></pre>
+				</section>
+
+				<section>
+					<section>
+						<h2>Commits</h2>
+						<p>Snapshots de nuestro código asociados a un <i>checksum</i></p>
+
+						<p>Físicamente, Git solo almacena el "incremento" de un commit respecto a otro</p>
+					</section>
+
+					<section>
+						<h2>Workflow básico</h2>
+						<ol>
+							<li>Hago cambios en el repositorio</li>
+							<li>Añado los ficheros a mi <i>staged zone</i></li>
+							<li>Hago el commit</li>
+							<li class="fragment">GOTO 1</li>
+						</ol>
+					</section>
+
+					<section>
+						<h2>Crear un repositorio</h2>
+						
+						<p>Desde cero</p>
+
+						<pre><code contenteditable>
+$ git init .
+						</code></pre>
+
+						<p>Si queremos clonar otro repositorio</p>
+
+						<pre><code contenteditable>
+$ git clone URI DESTINO
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Primer commit</h2>
+						
+						<pre><code contenteditable>
+# Creamos un fichero vacío
+$ touch nuevoFichero
+
+# Lo añadimos al repositorio (y al commit)
+$ git add nuevoFichero
+
+# Hacemos commit
+$ git commit -m "Primer commit con un fichero vacío"
+[master (root-commit) e88f7b4] Primer commit con un fichero vacío
+ 0 files changed
+  create mode 100644 nuevoFichero
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Comprobar el estado de mi repositorio</h2>
+	
+						<pre><code contentedita>
+$ git status
+# On branch master
+nothing to commit (working directory clean)
+
+# Añadimos texto al fichero
+$ echo "Un texto cualquiera" >> nuevoFichero
+
+$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   nuevoFichero
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Añadimos el cambio al commit</h2>
+
+						<pre><code contentedita>
+# El fichero pasa a estar en el estado "staged"
+$ git add nuevoFichero
+
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   nuevoFichero
+#
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Hacemos commit</h2>
+						
+						<pre><code contenteditable>
+$ git commit -m "Texto añadido al fichero"
+[master 714a6dd] Texto añadido al fichero
+1 file changed, 1 insertion(+)
+						</code></pre>
+
+						<pre><code contenteditable>
+$ git status
+# On branch master
+nothing to commit (working directory clean)
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>El log</h2>
+						<p>Nos sirve para revisar el historial de nuestros commits</p>
+
+						<p><b>MUY</b> versátil</p>
+
+						<pre><code contenteditable>
+# Log del commit anterior
+$ git log -1
+commit 714a6dddcca12859433dce6fb800cf0411ed7593
+Author: Miguel de la Cruz <mgdelacroix@gmail.com>
+Date:   Fri Sep 21 10:56:41 2012 +0200
+
+    Texto añadido al fichero
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Un log más completo</h2>
+						
+						<pre><code contenteditable>
+$ git log --graph --oneline --branches
+
+* 390cdf1 copy tweaks
+*   f12ac5f Merge branch 'master' of github.com:hakimel/reveal.js
+|\
+| *   21d8007 Merge pull request #141 from rmurphey/node_0.8
+| |\
+| | * 9688d3a package.json for node 0.8+
+| |/
+* | 024105f fix mixed spaces & tabs, remove unused feature test
+|/
+*   28567f3 Merge branch 'master' of github.com:hakimel/reveal.js
+|\
+| * 48390c0 readme update
+* | edfcfb1 open slide notes window automatically #135
+* |   884ecc6 Merge branch 'open-notes-in-new-window'
+|\ \
+| |/
+|/|
+| * 77d338f Open notes in new window, instead of printing
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Revertir cambios</h2>
+
+						<pre><code contenteditable>
+# Nos traemos los ficheros del HASH
+git checkout HASH archivos
+
+# borramos de este hash en adelante
+git reset --hard HASH
+
+# crea un nuevo commit sin el cambio que hubiera en HEAD
+git revert HEAD
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Ignorando ficheros</h2>
+						
+						<p>En nuestro repositorio puede haber ficheros que queramos ignorar</p>
+
+						<p>Podemos usar el fichero oculto <b>.gitignore</b></p>
+
+						<p>Basado en wildcards</p>
+
+					</section>
+
+					<section>
+						
+						<h2>Ejemplo de .gitignore</h2>
+
+						<pre><code contenteditable>
+$ cat .gitignore
+
+stacktrace.log
+*.swp
+*.class
+.classpath
+.project
+.settings/
+target/
+bin/
+target-eclipse/
+						</code></pre>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>Ramas</h2>
+						
+						<pre><code contenteditable>
+# Crear una rama
+$ git branch NOMBRE
+
+# Listar ramas
+$ git branch
+
+# Borrar una rama
+$ git branch -d NOMBRE
+						</code></pre>
+
+						<p>El nombre por defecto de la rama principal es <b>master</b></p>
+					</section>
+
+					<section>
+						<h2>Desplazarnos por un repositorio</h2>
+
+						<pre><code contenteditable>
+# La rama actual aparece marcada con un *
+$ git branch
+* master
+  rama
+
+# Movernos a una rama
+$ git checkout NOMBRE
+Switched to branch 'rama'
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Posibles usos de las ramas</h2>
+
+						<ul>
+							<li>Desarrollar funcionalidades nuevas sin modificar el código estable</li>
+							<li>Una rama por incidencia</li>
+							<li>Hacer cambios en una versión en producción</li>
+							<li>Tener un branch por entorno (testing, producción...)</li>
+							<li>Gestionar versiones</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Merge</h2>
+						<p>El comando merge intenta juntar los cambios de dos ramas y commitear el resultado en una de ellas (rama destino)</p>
+
+						<img src="images/merge.png" />
+
+					</section>
+
+					<section>
+
+						<h2>Ejemplo</h2>
+
+						<p>Traernos los cambios de la rama <i>i42</i> a <i>master</i></p>
+
+						<pre><code contenteditable>
+# Nos desplazamos a la rama en la que queremos juntar los cambios
+$ git checkout master
+
+# Hacemos el merge
+$ git merge i42
+Updating 714a6dd..1a1678a
+Fast-forward
+ nuevoFichero |    1 +
+  1 file changed, 1 insertion(+)
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Fast Forward</h2>
+
+						<img src="images/fastforward.png" />
+
+						<p></p>
+					</section>
+
+					<section data-state="alert">
+						<h2>Conflictos</h2>
+
+						<p>Si hemos cambiado la misma sección de un fichero en dos ramas diferentes, habrá conflictos al mergearlas</p>
+
+						<pre><code contenteditable>
+$ git merge rama
+Auto-merging nuevoFichero
+CONFLICT (content): Merge conflict in nuevoFichero
+Automatic merge failed; fix conflicts and then commit the result.
+						</code></pre>
+
+						<pre><code contenteditable>
+$ git status
+# On branch master
+# Unmerged paths:
+#   (use "git add/rm <file>..." as appropriate to mark resolution)
+#
+#       both modified:      nuevoFichero
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+						</code></pre>
+					</section>
+
+					<section data-state="soothe">
+						<h2>Resolución del conflicto</h2>
+
+						<pre><code contenteditable>
+# Contenido del fichero
+$ cat nuevoFichero
+<<<<<<< HEAD
+Un texto cualquiera (en castellano)
+=======
+Un texto cualquiera (dos líneas)
+>>>>>>> rama
+Más texto
+						</code></pre>
+
+						<ol>
+							<li>Resolvemos el conflicto dejando solo las líneas de la solución</li>
+							<li>Añadimos el fichero con <i>git add</i></li>
+							<li>Terminamos el merge haciendo commit</li>
+						</ol>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>Interacción entre repositorios</h2>
+
+						<p>Nuestro repositorio local almacena las direcciones de otros repositorios en forma de <b>remotos</b></p>
+
+						<p>El repositorio central que usamos a modo de servidor se suele nombrar como <b>origin</b></p>
+					</section>
+
+					<section>
+						<h2>CRUD de remotos</h2>
+
+						<pre><code contenteditable>
+# CREATE
+$ git remote add NOMBRE URI
+
+# READ (podemos usar -v para obtener más datos)
+$ git remote
+origin
+
+# UPDATE = REMOVE + CREATE
+
+# DELETE
+$ git remote rm NOMBRE
+						</code></pre>
+					</section>
+	
+					<section>
+						<h2>Sincronizar con un remoto</h2>
+
+						<p>Usamos <i>push</i> y <i>pull</i> para enviar y traernos los cambios respectivamente</p>
+
+						<br />
+
+						<p>Ejemplos de <b>URI</b>s</p>
+
+						<pre><code contenteditable>
+https://github.com/hakimel/reveal.js.git
+
+git@github.com:hakimel/reveal.js.git
+
+file:///tmp/reveal.js
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>push</h2>
+						<pre><code contenteditable>
+# Formato
+$ git push REPOSITORIO RAMA
+						</code></pre>
+						<p>Envía los commits de una rama a la misma rama en el remoto</p>
+
+						<p>Puede fallar si en la rama remota había cambios que nosotros no tuviéramos, en cuyo caso tendríamos que hacer <i>pull</i> primero</p>
+					</section>
+	
+					<section>
+						<h2>pull</h2>
+
+						<p>Sincroniza nuestra rama con la rama remota, descargando los cambios</p>
+
+						<pre><code contenteditable>
+# Formato
+$ git pull REMOTO RAMA
+						</code></pre>
+
+						<p>Si hay cambios en el remoto y en nuestro repositorio, los mergea automáticamente</p>
+					</section>
+
+					<section>
+						<h2>Tags</h2>
+						<p>Un tag es una etiqueta para un commit</p>
+						
+						<pre><code contenteditable>
+# Crear un tag
+$ git tag NOMBRE -m "Mensaje"
+
+# Listar tags
+$ git tag
+
+# Inspeccionar un tag
+$ git tag show NOMBRE
+
+# Borrar un tag
+$ git tag -d NOMBRE
+
+# Subir los tags a un remoto
+$ git push --tags
+						</code></pre>
+					</section>
+	
+				</section>
+
+				<section>
+					<section>
+						<h2>Rebase</h2>
+
+						<p>Cuando hacemos merge, si no hay <i>fast-forward</i>, el resultado de mezclar ambas ramas crea un commit</p>
+
+						<img src="images/merge.png" />
+
+						<p>Para evitar este commit que "ensucia" el histórico, utilizamos <b>rebase</b></p>
+					</section>
+
+					<section>
+						<h2>Ejemplo de rebase</h2>
+
+						<pre><code contenteditable>
+# Nos desplazamos a la rama donde queremos hacer el rebase
+$ git checkout rama
+
+# Ejecutamos el rebase
+$ git rebase master
+						</code></pre>
+
+						<img src="images/rebase.png" />
+					</section>
+
+					<section data-state="alert">
+						<h2>Conflictos</h2>
+
+						<pre><code contenteditable>
+# Si surge un conflicto a la hora de aplicar un commit, el rebase
+# se detendrá para que lo solucionemos
+
+# Solucionar un conflicto y continuar
+$ git add ficheroConConflicto
+$ git rebase --continue
+
+# Abortar el rebase
+$ git rebase --abort
+						</code></pre>
+
+					</section>
+
+					<section data-state="soothe">
+						<h2>Integración</h2>
+
+						<p>Con el rebase completo, <i>rama</i> contendrá los commits de <i>master</i> y los propios aplicados y mergeados encima</p>
+
+						<br />
+
+						<p>Si hacemos un merge de <i>rama</i> con <i>master</i>, se hará en forma de <i>fast-forward</i> y el historial quedará limpio</p>
+
+					</section>
+				</section>
+
+				<!--
+				<section>
+					<section>
+						<h2>Buenas prácticas</h2>
+						<p></p>
+					</section>
+
+					<section>
+						<h2>Formato de los mensajes</h2>
+						<p></p>
+					</section>
+	
+					<section>
+						<h2>Workflows</h2>
+						<p></p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Reflog</h2>
+					</section>
+				</section>
+				-->
+
+				<section>
+					<section>
+						<h2>¿Preguntas?</h2>
+					</section>
+
+					<section>
+						<h2>Git bisect</h2>
+					</section>
+
+					<section>
+						<h2>Git pull --rebase</h2>
+					</section>
+
+					<section>
+						<h2>git add --patch</h2>
+					</section>
+				</section>
+
+				<section>
+					<h2>¡Gracias!</h2>
+
+					<ul>
+						<li>Correo: <a href="mailto:mgdelacroix@gmail.com">mgdelacroix@gmail.com</a></li>
+					
+						<li>Twitter: <a href="http://twitter.com/mgdelacroix">@mgdelacroix</a></li>
+					</ul>
+
+					<img src="images/nyantocat.gif" />
+				</section>
+
+			</div>
+
+			<!-- The navigational controls UI -->
+			<aside class="controls">
+				<a class="left" href="#">&#x25C4;</a>
+				<a class="right" href="#">&#x25BA;</a>
+				<a class="up" href="#">&#x25B2;</a>
+				<a class="down" href="#">&#x25BC;</a>
+			</aside>
+
+			<!-- Presentation progress bar -->
+			<div class="progress"><span></span></div>
+			
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+			
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				
+				theme: Reveal.getQueryHash().theme || 'default', // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/linear(2d)
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '/socket.io/socket.io.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+					{ src: 'plugin/speakernotes/client.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+				]
+			});
+			
+		</script>
+
+	</body>
+</html>
