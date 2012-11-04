@@ -41,7 +41,7 @@
 			<div class="slides">
 				<section>
 					<h1>Git básico</h1>
-					<h3>Barcamp Spain 2012</h3>
+					<h3>Grupo de Usuarios de Linux</h3>
 				</section>
 
 				<section>
@@ -638,6 +638,284 @@ $ git rebase --abort
 
 				<section>
 					<section>
+						<h2>Guías de estilo en los commits</h2>
+
+						<br />
+
+						<p>Facilitan mucho la lectura y la colaboración al mantener criterios comunes</p>
+					</section>
+
+					<section>
+						<h2>Evitar espacios en blanco</h2>
+
+						<p>Git nos facilita una herramienta que intenta localizar espacios en blanco</p>
+
+						<pre><code contenteditable>
+# Se han sustituido los espacios por X
+$ git diff --check
+
+file:2: trailing whitespace.
++XXXXXXXXXXXXXXX
+file:3: trailing whitespace.
++Another group with spacesXXXXXXXXXXXXXXX
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Un commit por cada grupo de cambios</h2>
+
+						<br />
+
+						<p>Hay que intentar separar cada grupo lógico de cambios en un commit propio</p>
+
+						<ul>
+							<li>Mejora la legibilidad del histórico</li>
+							<li>Facilita la localización de la información</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Mensajes de calidad</h2>
+
+						<br />
+
+						<p>Son una buena práctica que mejora la legibilidad</p>
+
+						<p>Herramientas como <i>git rebase</i> pueden confundirse si nuestros mensajes son malos</p>
+
+					</section>
+
+					<section>
+						<h2>Guidelines</h2>
+
+						<br />
+
+						<ol>
+							<li>Una línea de 50 caracteres resumiendo el commit</li>
+							<li>Una línea en blanco</li>
+							<li>Párrafos con líneas de 72 caracteres aprox. detallando el commit</li>
+							<li>"Añade cambios en los estilos"</li>
+						</ol>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>El reflog</h2>
+
+						<p>El reflog es un mecanismo que registra información cada vez que una rama se actualiza</p>
+						
+						<p>El comando <i>reflog</i> sirve para manejar esta información</p>
+
+						<pre><code contenteditable>
+# Utilizado sin argumentos
+$ git reflog
+a37c208 HEAD@{0}: checkout: moving from mi_rama to master
+63d5552 HEAD@{1}: commit: Second commit
+a37c208 HEAD@{2}: checkout: moving from master to mi_rama
+a37c208 HEAD@{3}: commit (initial): First commit
+						</code></pre>
+					</section>
+
+					<section data-state="alert">
+						<h2>Caso de uso: recuperar una rama borrada</h2>
+
+						<pre><code contenteditable>
+# Hacemos commit en una rama
+$ git commit -m "Very important commit"
+
+# Nos vamos a master
+$ git checkout master
+
+# Borramos la rama sin mergearla
+$ git branch -d my_branch
+error: The branch 'my_branch' is not fully merged.
+If you are sure, run 'git branch -D my_branch'
+
+$ git branch -D my_branch
+Deleted branch my_branch (was 456f354).
+						</code></pre>
+					</section>
+
+					<section data-state="soothe">
+						<h2>Solución</h2>
+
+						<pre><code contenteditable>
+# Buscamos el SHA-1 del último commit de la rama
+$ git reflog
+6d58dc8 HEAD@{0}: checkout: moving from my_branch to master
+456f354 HEAD@{1}: commit: Another very important commit
+2923106 HEAD@{2}: commit: Very important commit
+6d58dc8 HEAD@{3}: checkout: moving from master to my_branch
+6d58dc8 HEAD@{4}: commit (initial): First commit
+
+# Nos desplazamos hasta él
+$ git checkout 456f354
+
+# Re-creamos la rama con su contenido
+$ git checkout -b my_branch
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Formas de referenciar a un commit</h2>
+
+						<p>Existen varias formas de referenciar a un commit</p>
+
+						<p>El método más básico es utilizar el Hash SHA-1</p>
+
+						<pre><code contenteditable>
+# Podemos utilizar el SHA-1 completo
+$ git log 
+commit a37c208c30eaa2801b22e6ee79e153ada23f463c
+Author: Miguel de la Cruz <mgdelacroix@gmail.com>
+Date:   Sun Nov 4 22:33:22 2012 +0100
+
+    First commit
+
+# O un SHA-1 parcial, de al menos 4 caracteres y único
+$ git log --oneline
+a37c208 First commit
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Ramas como referencias</h2>
+
+						<p>Una rama es un puntero a un commit<p>
+
+						<p>Podemos usar el nombre de la rama para referirnos a su último commit</p>
+						
+						<pre><code contenteditable>
+$ git show my_branch
+commit 63d5552ecb9abb5675351516a589438cf15dd7e3
+Author: Miguel de la Cruz <mgdelacroix@gmail.com>
+Date:   Sun Nov 4 23:15:19 2012 +0100
+
+    Second commit
+
+diff --git a/file b/file
+index 48ab6c8..21b7217 100644
+...
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Referencia mediante ancestros</h2>
+
+						<p><b>HEAD</b> referencia al commit en el que nos encontramos</p>
+
+						<pre><code contenteditable>
+# El padre de HEAD
+$ git show HEAD^
+
+# El padre del padre del padre de HEAD
+$ git show HEAD^^^
+
+# Sintaxis equivalente
+$ git show HEAD~3
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Commits con varios padres</h2>
+
+						<p>Cuando referenciamos al padre de un commit de merge, existen dos padres</p>
+
+						<br />
+
+						<p>El <i>primer padre</i> es el commit de la rama <b>en</b> la que hicimos el merge</p>
+
+						<p>El <i>segundo padre</i> es el commit de la rama <b>de</b> la que hicimos el merge</p>
+
+					</section>
+
+					<section>
+						<h2>Ejemplos de sintaxis</h2>
+
+						<br />
+
+						<pre><code contenteditable>
+# Primer padre de HEAD
+$ git show HEAD^1
+
+# Segundo padre de a37c208
+$ git show a37c208^2
+
+# Segundo padre del tercer ancestro de la rama my_branch
+$ git show my_branch~3^2
+
+# Otra forma de referenciar el último caso
+$ git show my_branch^^^2
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Su posición en el reflog</h2>
+
+						<p>Podemos referenciar un commit a partir de su posición en el reflog</p>
+
+						<pre><code contenteditable>
+$ git reflog
+6d58dc8 HEAD@{0}: checkout: moving from master to 6d58dc8
+6d58dc8 HEAD@{1}: checkout: moving from my_branch to master
+456f354 HEAD@{2}: commit: Another very important commit
+2923106 HEAD@{3}: commit: Very important commit
+6d58dc8 HEAD@{4}: checkout: moving from master to my_branch
+6d58dc8 HEAD@{5}: commit (initial): First commit
+
+$ git checkout HEAD@{2}
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<h2>Stashing</h2>
+				</section>
+
+				<section>
+					<h2>Staging</h2>
+				</section>
+
+				<section>
+					<h2>Borrado de contenido remoto</h2>
+
+					* Borrar una rama
+					* Forzar un push (caso de uso, he cambiado el último commit con --amend -> push -f)
+				</section>
+
+				<section>
+					<h2>Parámetros chulos de configuración</h2>
+
+					* y aliases
+				</section>
+
+				<section>
+					<h2>Git blame</h2>
+				</section>
+
+				<section>
+					<h2>Introducción a los hooks</h2>
+				</section>
+
+				<section>
+					* Stashing
+					* Staging
+					  * git add -p
+					  * squash commits
+					  * rebase interactivo
+					* Borrado de contenido remoto
+					* Git configuratión
+					* Git Blame
+					* Git Hooks
+					* Binary Search
+					* Workflows para la colaboración
+				</section>
+
+				<section>
+					<section>
 						<h2>Preguntas?</h2>
 					</section>
 
@@ -655,6 +933,7 @@ $ git rebase --abort
 					</section>
 					-->
 				</section>
+
 
 				<section>
 					<h2>¡Gracias!</h2>
@@ -697,7 +976,7 @@ $ git rebase --abort
 				progress: true,
 				history: true,
 				
-				theme: Reveal.getQueryHash().theme || 'default', // available themes are in /css/theme
+				theme: Reveal.getQueryHash().theme || 'sky', // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/linear(2d)
 
 				// Optional libraries used to extend on reveal.js
