@@ -4,14 +4,14 @@
 	<head>
 		<meta charset="utf-8">
 		
-		<title>Git básico</title>
+		<title>Git: de cero a cien</title>
 
 		<meta name="description" content="Git básico">
 		<meta name="author" content="Miguel de la Cruz">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		
+
 		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 		
 		<link rel="stylesheet" href="css/main.css">
@@ -40,7 +40,7 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Git básico</h1>
+					<h1>Git: de cero a cien</h1>
 					<h3>Grupo de Usuarios de Linux</h3>
 				</section>
 
@@ -55,6 +55,12 @@
 					<h4><a href="http://www.salenda.es">Salenda</a></h4>
 					<p><i><small>- <a href="http://twitter.com/mgdelacroix">@mgdelacroix</a></small></i></p>
 					</ul>
+				</section>
+
+				<section>
+					<h2>Primera parte</h2>
+					<br />
+					<h1>Las bases</h1>
 				</section>
 
 				<section>
@@ -96,6 +102,8 @@
 							<li>staged</li>
 						</ul>
 					</ul>
+
+					<img src="images/gitstates.png" />
 				</section>
 
 				<section>
@@ -558,83 +566,10 @@ $ git push --tags
 				</section>
 
 				<section>
-					<section>
-						<h2>Rebase</h2>
-
-						<p>Cuando hacemos merge, si no hay <i>fast-forward</i>, el resultado de mezclar ambas ramas crea un commit</p>
-
-						<img src="images/merge.png" />
-
-						<p>Para evitar este commit que "ensucia" el histórico, utilizamos <b>rebase</b></p>
-					</section>
-
-					<section>
-						<h2>Ejemplo de rebase</h2>
-
-						<pre><code contenteditable>
-# Nos desplazamos a la rama donde queremos hacer el rebase
-$ git checkout rama
-
-# Ejecutamos el rebase
-$ git rebase master
-						</code></pre>
-
-						<img src="images/rebase.png" />
-					</section>
-
-					<section data-state="alert">
-						<h2>Conflictos</h2>
-
-						<pre><code contenteditable>
-# Si surge un conflicto a la hora de aplicar un commit, el rebase
-# se detendrá para que lo solucionemos
-
-# Solucionar un conflicto y continuar
-$ git add ficheroConConflicto
-$ git rebase --continue
-
-# Abortar el rebase
-$ git rebase --abort
-						</code></pre>
-
-					</section>
-
-					<section data-state="soothe">
-						<h2>Integración</h2>
-
-						<p>Con el rebase completo, <i>rama</i> contendrá los commits de <i>master</i> y los propios aplicados y mergeados encima</p>
-
-						<br />
-
-						<p>Si hacemos un merge de <i>rama</i> con <i>master</i>, se hará en forma de <i>fast-forward</i> y el historial quedará limpio</p>
-
-					</section>
+					<h2>Segunda parte</h2>
+					<br />
+					<h1>Git avanzado</h1>
 				</section>
-
-				<!--
-				<section>
-					<section>
-						<h2>Buenas prácticas</h2>
-						<p></p>
-					</section>
-
-					<section>
-						<h2>Formato de los mensajes</h2>
-						<p></p>
-					</section>
-	
-					<section>
-						<h2>Workflows</h2>
-						<p></p>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h2>Reflog</h2>
-					</section>
-				</section>
-				-->
 
 				<section>
 					<section>
@@ -696,6 +631,91 @@ file:3: trailing whitespace.
 							<li>Párrafos con líneas de 72 caracteres aprox. detallando el commit</li>
 							<li>"Añade cambios en los estilos"</li>
 						</ol>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Git blame</h2>
+
+						<p><i>git blame</i> nos sirve para saber quién ha cambiado cada línea del repositorio y cuando</p>
+
+						<br />
+
+						<p>Muy útil para revisiones de código y para probar nuestra inocencia... o no</p>
+					</section>
+
+					<section>
+						<h2>Ejemplo de blame</h2>
+
+						<br />
+
+						<pre><code contenteditable>
+$ git blame file
+^728badb (Miguel de la Cruz 2012-11-04 23:49:08 +0100 1) One line
+^728badb (Miguel de la Cruz 2012-11-04 23:49:08 +0100 2) 
+^728badb (Miguel de la Cruz 2012-11-04 23:49:08 +0100 3) A little change
+						</code></pre>
+
+						<br />
+
+						<p>No muestra información de líneas borradas o reemplazadas</p>
+
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Rebase</h2>
+
+						<p>Cuando hacemos merge, si no hay <i>fast-forward</i>, el resultado de mezclar ambas ramas crea un commit</p>
+
+						<img src="images/merge.png" />
+
+						<p>Para evitar este commit que "ensucia" el histórico, utilizamos <b>rebase</b></p>
+					</section>
+
+					<section>
+						<h2>Ejemplo de rebase</h2>
+
+						<pre><code contenteditable>
+# Nos desplazamos a la rama donde queremos hacer el rebase
+$ git checkout rama
+
+# Ejecutamos el rebase
+$ git rebase master
+						</code></pre>
+
+						<img src="images/rebase.png" />
+					</section>
+
+					<section data-state="alert">
+						<h2>Conflictos</h2>
+
+						<pre><code contenteditable>
+# Si surge un conflicto a la hora de aplicar un commit, el rebase
+# se detendrá para que lo solucionemos
+
+# Solucionar un conflicto y continuar
+$ git add ficheroConConflicto
+$ git rebase --continue
+
+# Abortar el rebase
+$ git rebase --abort
+						</code></pre>
+
+					</section>
+
+					<section data-state="soothe">
+						<h2>Integración</h2>
+
+						<p>Con el rebase completo, <i>rama</i> contendrá los commits de <i>master</i> y los propios aplicados y mergeados encima</p>
+
+						<br />
+
+						<p>Si hacemos un merge de <i>rama</i> con <i>master</i>, se hará en forma de <i>fast-forward</i> y el historial quedará limpio</p>
+
 					</section>
 				</section>
 
@@ -872,66 +892,235 @@ $ git checkout HEAD@{2}
 				</section>
 
 				<section>
-					<h2>Stashing</h2>
+					<section>
+						<h2>Stashing</h2>
+
+						<p>En ocasiones nos veremos forzados a cambiarnos de rama dejando la nuestra <i>sucia</i></p>
+
+						<p>Git no nos permite este comportamiento</p>
+
+						<p>¿Solución? <b>git stash</b></p>
+					</section>
+
+					<section>
+						<h2>Stash</h2>
+
+						<p><b>stash</b> nos permite almacenar la <i>suciedad</i> de nuestra rama y recuperarla después</p>
+
+						<p>Se utiliza en momentos puntuales y habitualmente por causas de <i>fuerza mayor</i></p>
+					</section>
+
+					<section data-state="alert">
+						<h2>Advertencia</h2>
+
+						<p>Es <b>muy</b> fácil que nos olvidemos de los stashes que creamos si dejamos pasar algo de tiempo</p>
+
+						<img src="images/stash.gif" />
+					</section>
+
+					<section>
+						<h2>Uso de stash</h2>
+
+						<pre><code contenteditable>
+# Crear un stash
+$ git stash
+
+# Listar los stashes
+$ git stash list
+
+# Aplicar un stash
+$ git stash apply STASH
+
+# Borrar un stash
+$ git stash drop STASH
+
+# Aplicar & Borrar un stash
+$ git stash pop STASH
+						</code></pre>
+					</section>
 				</section>
 
 				<section>
-					<h2>Staging</h2>
+					<section>
+						<h2>Staging interactivo</h2>
+
+						<p>Nos facilita el realizar un commit cuando tenemos mucha información mediante una interfaz interactiva</p>
+
+						<pre><code contenteditable>
+# Ejemplo de staging interactivo
+$ git add -i
+           staged     unstaged path
+  1:    unchanged        +4/-0 file
+
+*** Commands ***
+  1: status       2: update      3: revert      4: add untracked
+  5: patch        6: diff        7: quit        8: help
+What now>
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Añadir un parche</h2>
+
+						<p>Es lo mismo que utilizar <i>git add -i</i> y la opción de <i>patch</i></p>
+
+						<pre><code contenteditable>
+# Ejemplo de git patch
+$ git add --patch file
+
+# Sintaxis equivalente
+$ git add -p file
+						</code></pre>
+
+						<br />
+
+						<p>Estas opciones son útiles cuando hemos hecho muchos cambios que queremos dividir en varios commits</p>
+					</section>
 				</section>
 
 				<section>
-					<h2>Borrado de contenido remoto</h2>
+					<section>
+						<h2>Borrado de contenido remoto</h2>
 
-					* Borrar una rama
-					* Forzar un push (caso de uso, he cambiado el último commit con --amend -> push -f)
+						<p>Puede darse el caso de que hayamos subido commits y ramas a nuestro repositorio que queramos borrar</p>
+
+						<br /><br />
+
+						<p><b>Regla de oro:</b> asegurate de que nadie se ha bajado tus cambios</p>
+					</section>
+
+					<section>
+						<h2>Borrar una rama remota</h2>
+
+						<br />
+
+						<pre><code contenteditable>
+# Sintaxis genérica
+$ git push REPOSITORIO :RAMA
+
+# Ejemplo: borramos la rama "funcionalidadX"
+$ git push origin :funcionalidadX
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Forzar un push</h2>
+
+						<p>Existen casos en los que, cuando hay un conflicto de referencias, podemos forzar a que el repositorio remoto deseche las suyas y acepte las nuestras</p>
+
+						<pre><code contenteditable>
+# Sintaxis genérica
+$ git push -f REPOSITORIO RAMA
+						</code></pre>
+					</section>
+
+					<section data-state="alert">
+						<h2>Caso de uso: después de un amend</h2>
+
+						<pre><code contenteditable>
+# Hacemos un commit y lo subimos
+$ git commit -m "Commit incompleto"
+$ git push origin master
+
+# Añadimos un pequeño cambio al commit
+$ git commit --amend
+
+# Intentamos hacer push
+$ git push origin master
+To git@github.com:mgdelacroix/test.git
+ ! [rejected]        master -> master (non-fast-forward)
+ error: failed to push some refs to 'git@github.com:mgdelacroix/test.git'
+						</code></pre>
+					</section>
+
+					<section data-state="soothe">
+						<h2>Solución</h2>
+
+						<pre><code contenteditable>
+# Basta con forzar el commit
+$ git push -f origin master
+						</code></pre>
+
+						<br />
+
+						<p>Es posible que el repositorio tenga activada una opción para rechazar este tipo de commits</p>
+					</section>
 				</section>
 
 				<section>
-					<h2>Parámetros chulos de configuración</h2>
+					<section>
+						<h2>Configuración de Git</h2>
 
-					* y aliases
+						<br />
+
+						<p>git almacena la configuración en varios ficheros, que recorre secuencialmente</p>
+
+						<br />
+
+						<p>Dependiendo de donde esté guardada, la configuración se aplicará a uno o varios usuarios</p>
+
+					</section>
+
+					<section>
+						<h2>Configuración de Git</h2>
+
+						<p>Podemos guardar un valor de configuración o bien escribiendo en el fichero, o bien usando el comando <i>git config</i></p>
+
+						<br />
+
+						<ol>
+							<li><b>/etc/gitconfig</b>: parámetro <i>--system</i></li>
+							<li><b>~/.gitconfig</b>: parámetro <i>--global</i></li>
+							<li><b>.git/config</b>: sin parámetros</li>
+						</ol>
+					</section>
+
+					<section>
+						<h2>Uso del comando config</h2>
+
+						<p>La sintaxis básica del comando <i>git config</i> es la siguiente:</p>
+
+						<pre><code contenteditable>
+# Sintaxis genérica
+$ git config [TYPE] CLAVE [VALOR]
+
+# Obtener el valor de user.name
+$ git config user.name
+
+# Setear el valor de user.name
+$ git config user.name "Miguel de la Cruz"
+
+# Setear el mismo valor para todos mis repositorios
+$ git config --global user.name "Miguel de la Cruz"
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Algunos parámetros interesantes</h2>
+
+						<br />
+
+						<ul>
+							<li><b>core.editor</b>: editor por defecto</li>
+							<li><b>color.ui</b>: git colorea automáticamente la mayoría de su output (valores <i>true/false/allways</i>)</li>
+							<li><b>diff.tool</b>: git usará esta herramienta cuando hagamos un diff</li>
+							<li><b>merge.tool</b>: git usará esta herramienta cuando hagamos un merge</li>
+						</ul>
+					</section>
 				</section>
 
+				<!--
 				<section>
-					<h2>Git blame</h2>
+					<h2>Git bisect</h2>
 				</section>
 
 				<section>
 					<h2>Introducción a los hooks</h2>
 				</section>
+				-->
 
 				<section>
-					* Stashing
-					* Staging
-					  * git add -p
-					  * squash commits
-					  * rebase interactivo
-					* Borrado de contenido remoto
-					* Git configuratión
-					* Git Blame
-					* Git Hooks
-					* Binary Search
-					* Workflows para la colaboración
-				</section>
-
-				<section>
-					<section>
-						<h2>Preguntas?</h2>
-					</section>
-
-					<!--
-					<section>
-						<h2>Git bisect</h2>
-					</section>
-
-					<section>
-						<h2>Git pull --rebase</h2>
-					</section>
-
-					<section>
-						<h2>git add --patch</h2>
-					</section>
-					-->
+					<h2>Preguntas?</h2>
 				</section>
 
 
